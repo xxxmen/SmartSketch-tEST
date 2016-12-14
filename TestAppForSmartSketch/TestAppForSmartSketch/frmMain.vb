@@ -11,7 +11,6 @@ Public Class frmMain
         Dim drawnConnector As SmartSketch.Connector2d
         Dim connSPID As String
         Dim connType As String
-        Dim drawnSmartSym As SmartSketch.SmartSymbol2d
         Dim sppidDatasource As New Llama.LMADataSource
         Dim sppidExchanger As Llama.LMExchanger
         Dim sppidPipeRun As Llama.LMPipeRun
@@ -22,7 +21,6 @@ Public Class frmMain
         Dim matClasses As String = Nothing
         Dim linePattern As SmartSketch.LinearPattern
         Dim colorConst As SmartSketch.ColorConstants
-        'Dim obj As Object
         Dim txtboxString As String = Nothing
 
         ' Get SPPID INI File
@@ -92,69 +90,8 @@ Public Class frmMain
                 MsgBox(symTypes)
                 symTypes = Nothing
 
-                Dim attrNames As String = Nothing
-                For index As Integer = 1 To sketchDocument.ActiveSheet.SmartSymbols2d.Count
-                    drawnSmartSym = sketchDocument.ActiveSheet.SmartSymbols2d.Item(index)
-                    If Not drawnSmartSym.IsAttributeSetPresent("P&IDAttributes") Then Continue For
-                    For i = 1 To drawnSmartSym.AttributeSets("P&IDAttributes").Count
-                        Dim pidAttr As SmartSketch.Attribute
-                        Dim pidAttrName As String = Nothing
-                        pidAttr = drawnSmartSym.AttributeSets("P&IDAttributes").Item(i)
-                        pidAttrName = pidAttr.Name
-                        If pidAttrName Is Nothing OrElse pidAttrName = "" Then Continue For
-                        If InStr(attrNames, pidAttrName, vbTextCompare) > 0 Then Continue For
-                        If attrNames Is Nothing Then
-                            attrNames = pidAttrName
-                        Else
-                            attrNames = attrNames & ";" & pidAttrName
-                        End If
-                        pidAttrName = Nothing
-                        ReleaseObject(pidAttr)
-                    Next
-                    'For ind As Integer = 1 To drawnSmartSym.DrawingObjects.Count
-                    '    obj = drawnSmartSym.DrawingObjects.Item(ind)
-                    '    symType = obj.Type.ToString
-                    '    If symType IsNot Nothing Then
-                    '        'If Not obj.IsAttributeSetPresent("P&IDAttributes") Then Continue For
-                    '        Select Case CInt(symType)
-                    '            Case SmartSketch.ObjectType.igTextBox
-                    '                If obj.text Is Nothing OrElse obj.text = "" Then Continue For
-                    '                If txtboxString Is Nothing Then
-                    '                    txtboxString = obj.Text
-                    '                Else
-                    '                    txtboxString = txtboxString & "||" & obj.text
-                    '                End If
-                    '                '    Dim objAssigned As SmartSketch.TextBox
-                    '                'Case SmartSketch.ObjectType.igLineString2d
-                    '                '    Dim objAssigned As SmartSketch.LineString2d
-                    '                'Case SmartSketch.ObjectType.igBoundary2d
-                    '                '    Dim objAssigned As SmartSketch.Boundary2d
-                    '                'Case SmartSketch.ObjectType.igLine2d
-                    '                '    Dim objAssigned As SmartSketch.Line2d
-                    '                'Case SmartSketch.ObjectType.igPoint2d
-                    '                '    Dim objAssigned As SmartSketch.Point2d
-                    '                'Case SmartSketch.ObjectType.igCircle2d
-                    '                '    Dim objAssigned As SmartSketch.Circle2d
-                    '                'Case SmartSketch.ObjectType.igArc2d
-                    '                '    Dim objAssigned As SmartSketch.Arc2d
-                    '        End Select
-                    '    End If
-                    '    If InStr(symTypes, symType, vbTextCompare) > 0 Then Continue For
-                    '    If symTypes Is Nothing Then
-                    '        symTypes = symType
-                    '    Else
-                    '        symTypes = symTypes & ";" & symType
-                    '    End If
-                    '    ReleaseObject(obj)
-                    'Next
-                    'If txtboxString IsNot Nothing AndAlso txtboxString <> "" Then
-                    '    MsgBox(txtboxString)
-                    'End If
-                    'txtboxString = Nothing
-                    'ReleaseObject(drawnSmartSym)
-                Next
-                'MsgBox(symTypes)
-                MsgBox(attrNames)
+                ' LABELS IN SPPID DO NOT TRANSLATE INTO SMART OBJECTS IN SMARTSKETCH
+                ' BECOME PART OF SMARTSYMBOLS2D AS A GROUPED OBJECT (GRAPHICS AND TEXTBOX)
 
                 For index As Integer = 1 To sketchDocument.ActiveSheet.Connectors2d.Count
                     drawnConnector = sketchDocument.ActiveSheet.Connectors2d.Item(index)
@@ -272,3 +209,73 @@ End Class
 '    linePattern = sketchDocument.LinearPatterns.Item(index)
 '    MsgBox(linePattern.InferredName & ";" & linePattern.StyleName)
 'Next
+
+'Dim attrNames As String = Nothing
+'For index As Integer = 1 To sketchDocument.ActiveSheet.SmartSymbols2d.Count
+'    drawnSmartSym = sketchDocument.ActiveSheet.SmartSymbols2d.Item(index)
+'    If Not drawnSmartSym.IsAttributeSetPresent("P&IDAttributes") Then Continue For
+'    Dim symFlag As String
+'    symSPID = drawnSmartSym.AttributeSets("P&IDAttributes").Item("ModelID").Value.ToString
+'    symType = drawnSmartSym.AttributeSets("P&IDAttributes").Item("ModelItemType").Value.ToString
+'    sppidDatasource.ProjectNumber = drawnSmartSym.AttributeSets("P&IDAttributes").Item("ProjectNumber").Value.ToString
+'    symFlag = drawnSmartSym.AttributeSets("P&IDAttributes").Item("Flag").Value.ToString
+'    MsgBox(symType & ": " & symSPID & " || " & symFlag)
+'    'For i = 1 To drawnSmartSym.AttributeSets("P&IDAttributes").Count
+'    '    Dim pidAttr As SmartSketch.Attribute
+'    '    Dim pidAttrName As String = Nothing
+'    '    pidAttr = drawnSmartSym.AttributeSets("P&IDAttributes").Item(i)
+'    '    pidAttrName = pidAttr.Name
+'    '    If pidAttrName Is Nothing OrElse pidAttrName = "" Then Continue For
+'    '    If InStr(attrNames, pidAttrName, vbTextCompare) > 0 Then Continue For
+'    '    If attrNames Is Nothing Then
+'    '        attrNames = pidAttrName
+'    '    Else
+'    '        attrNames = attrNames & ";" & pidAttrName
+'    '    End If
+'    '    pidAttrName = Nothing
+'    '    ReleaseObject(pidAttr)
+'    'Next
+'    'For ind As Integer = 1 To drawnSmartSym.DrawingObjects.Count
+'    '    obj = drawnSmartSym.DrawingObjects.Item(ind)
+'    '    symType = obj.Type.ToString
+'    '    If symType IsNot Nothing Then
+'    '        'If Not obj.IsAttributeSetPresent("P&IDAttributes") Then Continue For
+'    '        Select Case CInt(symType)
+'    '            Case SmartSketch.ObjectType.igTextBox
+'    '                If obj.text Is Nothing OrElse obj.text = "" Then Continue For
+'    '                If txtboxString Is Nothing Then
+'    '                    txtboxString = obj.Text
+'    '                Else
+'    '                    txtboxString = txtboxString & "||" & obj.text
+'    '                End If
+'    '                '    Dim objAssigned As SmartSketch.TextBox
+'    '                'Case SmartSketch.ObjectType.igLineString2d
+'    '                '    Dim objAssigned As SmartSketch.LineString2d
+'    '                'Case SmartSketch.ObjectType.igBoundary2d
+'    '                '    Dim objAssigned As SmartSketch.Boundary2d
+'    '                'Case SmartSketch.ObjectType.igLine2d
+'    '                '    Dim objAssigned As SmartSketch.Line2d
+'    '                'Case SmartSketch.ObjectType.igPoint2d
+'    '                '    Dim objAssigned As SmartSketch.Point2d
+'    '                'Case SmartSketch.ObjectType.igCircle2d
+'    '                '    Dim objAssigned As SmartSketch.Circle2d
+'    '                'Case SmartSketch.ObjectType.igArc2d
+'    '                '    Dim objAssigned As SmartSketch.Arc2d
+'    '        End Select
+'    '    End If
+'    '    If InStr(symTypes, symType, vbTextCompare) > 0 Then Continue For
+'    '    If symTypes Is Nothing Then
+'    '        symTypes = symType
+'    '    Else
+'    '        symTypes = symTypes & ";" & symType
+'    '    End If
+'    '    ReleaseObject(obj)
+'    'Next
+'    'If txtboxString IsNot Nothing AndAlso txtboxString <> "" Then
+'    '    MsgBox(txtboxString)
+'    'End If
+'    'txtboxString = Nothing
+'    'ReleaseObject(drawnSmartSym)
+'Next
+''MsgBox(symTypes)
+'MsgBox(attrNames)
